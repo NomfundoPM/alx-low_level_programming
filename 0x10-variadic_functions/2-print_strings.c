@@ -1,31 +1,45 @@
-#ifndef VARIADIC_FUNCTIONS_H
-#define VARIADIC_FUNCTIONS_H
+#include "variadic_functions.h"
+	#include <stdio.h>
+	#include <stdarg.h>
 
-/*
- * File: variadic_functions.h
- * Auth: Nomfundo Matete
- * Desc: Header file containing prototypes for all functions
- *       used in the 0x0F-variadic_functions directory.
- */
 
-#include <stdarg.h>
+	/**
+	 * print_strings - Prints strings, followed by a new line.
+	 * @separator: The string to be printed between strings.
+	 * @n: The number of strings passed to the function.
+	 * @...: A variable number of strings to be printed.
+	 *
+	 * Description: If separator is NULL, it is not printed.
+	 *              If one of the strings if NULL, (nil) is printed instead.
+	 */
+	void print_strings(const char *separator, const unsigned int n, ...)
+	{
+		va_list strings;
+		char *str;
+		unsigned int index;
 
-/**
- * struct printer - A new struct type defining a printer.
- * @symbol: A symbol representing a data type.
- * @print: A function pointer to a function that prints
- *         a data type corresponding to symbol.
- */
-typedef struct printer
-{
-	char *symbol;
-	void (*print)(va_list arg);
 
-} printer_t;
+		va_start(strings, n);
 
-int sum_them_all(const unsigned int n, ...);
-void print_numbers(const char *separator, const unsigned int n, ...);
-void print_strings(const char *separator, const unsigned int n, ...);
-void print_all(const char * const format, ...);
 
-#endif
+		for (index = 0; index < n; index++)
+		{
+			str = va_arg(strings, char *);
+
+
+			if (str == NULL)
+				printf("(nil)");
+			else
+				printf("%s", str);
+
+
+			if (index != (n - 1) && separator != NULL)
+				printf("%s", separator);
+		}
+
+
+		printf("\n");
+
+
+		va_end(strings);
+	}
